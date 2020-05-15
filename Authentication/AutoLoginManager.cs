@@ -10,10 +10,11 @@ using UnityEngine.SceneManagement;
 
 public class AutoLoginManager : MonoBehaviour
 {
-    private FirebaseAuth auth;
+    FirebaseAuth auth;
     
-    private async void Awake()
-    {        
+    async void Awake()
+    {
+        auth = FirebaseAuth.DefaultInstance;
         var dependencyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
         if(dependencyStatus == DependencyStatus.Available)
         {
@@ -30,14 +31,13 @@ public class AutoLoginManager : MonoBehaviour
 
     private void CheckAuthUser()
     {
-        var currUser = auth.CurrentUser;
+        FirebaseUser currUser = auth.CurrentUser;
         if(currUser != null)
         {
             CheckEmailVerified();
 
             Debug.LogFormat("User Signed-In successfully {0} {1}",
-                currUser.Email, currUser.UserId);
-            Invoke("LoadAppHomeScene", 3.0f);
+                currUser.Email, currUser.UserId);            
         }
         else
         {
@@ -45,17 +45,27 @@ public class AutoLoginManager : MonoBehaviour
         }
     }
 
-    private void CheckEmailVerified()
+    private async void CheckEmailVerified()
     {
-        var currUser = auth.CurrentUser;
-        if(currUser.IsEmailVerified)
+        FirebaseUser currUser = auth.CurrentUser;
+        try
         {
-            Debug.Log("Email Verified");            
+            if(currUser.IsEmailVerified)
+            {            
+                await Router.UserEmailVerifiedNode(currUser.UserId).SetValueAsync("Verified");
+                Debug.Log("Email Verified");
+                Invoke("LoadAppHomeScene", 3.0f);
+            }
+            else if(!currUser.IsEmailVerified)
+            {
+                Debug.Log("Please verify your email address");
+                Invoke("LoadAppHomeScene", 3.0f);
+            }
         }
-        else
+        catch(Exception ex)
         {
-            Debug.Log("Please verify your email address");
-        }
+            Debug.Log(ex.InnerException.Message);
+        }        
     }
 
     private void LoadAppRegistScene()

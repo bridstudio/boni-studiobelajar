@@ -29,37 +29,7 @@ public class AuthManager : MonoBehaviour
             RequestEmail = true,
             RequestIdToken = true
         };
-    }    
-
-    public void OpenDialogLoading()
-    {        
-        dialogLoading.GetComponent<DialogBoxConfig>().Open();
-    }
-
-    public void CloseDialogLoading()
-    {
-        dialogLoading.GetComponent<DialogBoxConfig>().Close();        
-    }
-
-    public void OpenDialogEmailVerif()
-    {
-        dialogEmailVerif.GetComponent<DialogBoxConfig>().Open();
-    }
-
-    public void CloseDialogEmailVerif()
-    {
-        dialogEmailVerif.GetComponent<DialogBoxConfig>().Close();
-    }
-
-    public void OpenDialogResetPass()
-    {
-        dialogResetPass.GetComponent<DialogBoxConfig>().Open();
-    }
-
-    public void CloseDialogResetPass()
-    {
-        dialogResetPass.GetComponent<DialogBoxConfig>().Close();
-    }
+    }        
 
     public void SignInWithGoogle()
     {
@@ -76,7 +46,8 @@ public class AuthManager : MonoBehaviour
         OnSignOutFromEmail();
     }
 
-    private void OnSignInWithGoogle()
+    // Google Sign In
+	private void OnSignInWithGoogle()
     {
         GoogleSignIn.Configuration = configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
@@ -157,7 +128,10 @@ public class AuthManager : MonoBehaviour
                 UpdateStatusSignIn("User with Google SignIn: " + newUser.Email + " " + newUser.UserId);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLogin);
 
-                // UsersData.usersEmailVerified = "Verified";
+                // Post to Firebase Database
+				UserManager.emailVerified = "Verified";
+                UserManager.authType = "Google";
+				UserManager.email = newUser.Email;
                 PostToDatabase(newUser.UserId);
                 SceneManager.LoadScene("App_Home");
             }
@@ -233,7 +207,9 @@ public class AuthManager : MonoBehaviour
                 UpdateStatusSignUp("Email verification sent to: " + currUser.Email);                
 
                 // Post to Database
-                // UsersData.usersEmailVerified = "Unverified";
+                UserManager.emailVerified = "Unverified";
+				UserManager.authType = "Email";
+				UserManager.email = currUser.Email;
                 PostToDatabase(currUser.UserId);
 
                 // Load scene
@@ -282,17 +258,12 @@ public class AuthManager : MonoBehaviour
         {
             UpdateStatusResetPass("Wrong Email Address");
             CloseDialogLoading();
-            // Debug.Log(ex.InnerException.Message);            
+            Debug.Log(ex.InnerException.Message);            
         }
     }
 
-    private void PostToDatabase(string uid)
-    {
-        // Users users = new Users();
-        // DatabaseManager.sharedInstance.CreateNewUsers(users, uid);
-    }
-
-    private void OnSignOutFromEmail()
+	// Sign Out from Email
+	private void OnSignOutFromEmail()
     {
         Debug.Log("Logout a user");
         auth.SignOut();
@@ -300,6 +271,43 @@ public class AuthManager : MonoBehaviour
         // Load scene
         Debug.Log("Loading App_Regist scene...");
         SceneManager.LoadScene("App_Splash");
+    }
+
+    // Database
+	private void PostToDatabase(string uid)
+    {
+        User user = new User();
+        DatabaseManager.sharedInstance.CreateNewUser(user, uid);
+    }    
+
+	public void OpenDialogLoading()
+    {        
+        dialogLoading.GetComponent<DialogBoxConfig>().Open();
+    }
+
+    public void CloseDialogLoading()
+    {
+        dialogLoading.GetComponent<DialogBoxConfig>().Close();        
+    }
+
+    public void OpenDialogEmailVerif()
+    {
+        dialogEmailVerif.GetComponent<DialogBoxConfig>().Open();
+    }
+
+    public void CloseDialogEmailVerif()
+    {
+        dialogEmailVerif.GetComponent<DialogBoxConfig>().Close();
+    }
+
+    public void OpenDialogResetPass()
+    {
+        dialogResetPass.GetComponent<DialogBoxConfig>().Open();
+    }
+
+    public void CloseDialogResetPass()
+    {
+        dialogResetPass.GetComponent<DialogBoxConfig>().Close();
     }
 
     private void UpdateStatusSignIn(string message)
