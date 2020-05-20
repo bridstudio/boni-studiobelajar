@@ -25,6 +25,7 @@ public class DatabaseManager : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 		
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://boni-studiobelajaranak.firebaseio.com/");
+        // FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(true);
 		auth = FirebaseAuth.DefaultInstance;
     }	
 
@@ -37,7 +38,7 @@ public class DatabaseManager : MonoBehaviour
 	public void CreateNewUserStats(UserStats userStats, string uid)
 	{
 		string userStatsJSON = JsonUtility.ToJson(userStats);
-		Router.UserStatsWithDateTime(uid).SetRawJsonValueAsync(userStatsJSON);
+		Router.UserStatsWithUID(uid).Push().SetRawJsonValueAsync(userStatsJSON);
 	}
 
 	public async void GetUserStats(Action<List<UserStats>> completionBlock)
@@ -49,12 +50,11 @@ public class DatabaseManager : MonoBehaviour
 
 			foreach(DataSnapshot userStatsNode in userStats.Children)
 			{
-				// var values = userStatsNode.Value as Dictionary<string, object>;
-				var userStatsDict = (IDictionary<string, object>)userStatsNode.Value;
-				// IDictionary dictUserStats = (IDictionary)userStatsNode.Value;
+				// var userStatsDict = userStatsNode.Value as Dictionary<string, object>;
+				var userStatsDict = (IDictionary<string, object>)userStatsNode.Value;				
 				UserStats newUser = new UserStats(userStatsDict);
 
-				Debug.Log ("Firebase: " + userStatsDict["dateTime"] + " - " + "Firebase: " + userStatsDict["sceneName"] + " - " + "Firebase: " + userStatsDict["exitButtonPressed"] + " - " + userStatsDict["failedCount"] + " - " + userStatsDict["restartButtonPressed"] + " - " + userStatsDict["shapeSelected"] + " - " + userStatsDict["timerIdle"] + " - " + userStatsDict["timerOnTouch"]);
+				// Debug.Log ("Firebase: " + userStatsDict["dateTime"] + " - " + "Firebase: " + userStatsDict["sceneName"] + " - " + "Firebase: " + userStatsDict["exitButtonPressed"] + " - " + userStatsDict["failedCount"] + " - " + userStatsDict["restartButtonPressed"] + " - " + userStatsDict["shapeSelected"] + " - " + userStatsDict["timerIdle"] + " - " + userStatsDict["timerOnTouch"]);
 
 				tempList.Add(newUser);
 			}
@@ -65,4 +65,32 @@ public class DatabaseManager : MonoBehaviour
 			Debug.Log(ex.InnerException.Message);
 		}
 	}
+
+    public void CreateNewCurriculum(Curriculum curriculum)
+    {
+        string curriculumJSON = JsonUtility.ToJson(curriculum);
+        Router.Curriculum().Push().SetRawJsonValueAsync(curriculumJSON);
+    }
+
+    public async void GetCurriculum(Action<List<Curriculum>> completionBlock)
+    {
+        List<Curriculum> tempList = new List<Curriculum>();
+        try
+        {
+            DataSnapshot curriculum = await Router.Curriculum().GetValueAsync();
+
+            foreach(DataSnapshot curriculumNode in curriculum.Children)
+            {
+                var curriculumDict = (IDictionary<string, object>)curriculumNode.Value;
+                Curriculum newCurriculum = new Curriculum(curriculumDict);
+                tempList.Add(newCurriculum);
+            }
+
+            completionBlock(tempList);
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError(ex.InnerException.Message);
+        }
+    }
 }

@@ -81,6 +81,10 @@ public class AuthManager : MonoBehaviour
     {
         UpdateStatusSignIn("Calling SignOut from Google");
         GoogleSignIn.DefaultInstance.SignOut();
+
+        // Load scene
+        Debug.Log("Loading App_Regist scene...");
+        SceneManager.LoadScene("App_Splash");
     }
 
     public void OnDisconnectFromGoogle()
@@ -133,7 +137,7 @@ public class AuthManager : MonoBehaviour
                 UserManager.authType = "Google";
 				UserManager.email = newUser.Email;
                 PostToDatabase(newUser.UserId);
-                SceneManager.LoadScene("App_Home");
+                SceneManager.LoadScene("App_Splash");
             }
             else
             {
@@ -185,7 +189,7 @@ public class AuthManager : MonoBehaviour
 
             // Load scene
             UpdateStatusSignIn("Loading scene...");
-            SceneManager.LoadScene("App_Home");
+            SceneManager.LoadScene("App_Splash");
         }
         catch(Exception ex)
         {

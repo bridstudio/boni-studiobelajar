@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Firebase.Auth;
 using Firebase.Database;
@@ -11,9 +12,8 @@ public class UserStatsBoardManager : MonoBehaviour
     FirebaseAuth auth;
     FirebaseUser user;
     public List<UserStats> userStatsList = new List<UserStats>();
-    public GameObject rowPrefab;
-    public GameObject scrollContainer;
-    public GameObject dialogLoading;    
+    public GameObject rowPrefab, scrollContainer, dialogLoading;
+    public Text childCountText;
 
     public void Awake()
     {
@@ -38,9 +38,19 @@ public class UserStatsBoardManager : MonoBehaviour
 
     public void InitialiseUI()
     {
-        foreach(UserStats userStats in userStatsList)
+        if(userStatsList.Count > 0)
         {
-            CreateRow(userStats);            
+            childCountText.text = "";
+            
+            foreach(UserStats userStats in userStatsList)
+            {
+                CreateRow(userStats);
+            }            
+        }
+        else
+        {
+            OpenDialogLoading(false);
+            childCountText.text = "Sorry, there was no data available";
         }
     }
 

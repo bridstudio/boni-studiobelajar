@@ -37,10 +37,10 @@ public class Router : MonoBehaviour
 	public static DatabaseReference UserStatsWithUID(string uid)
 	{
 		return baseRef.Child("userStats").Child(uid);
-	}
+	}	
 
-	public static DatabaseReference UserStatsWithDateTime(string uid)
-	{
-		return baseRef.Child("userStats").Child(uid).Child(UserStatsManager.currHour + ":" + UserStatsManager.currMinute + ":" + UserStatsManager.currSecond + "_" + UserStatsManager.currDay + "-" + UserStatsManager.currMonth + "-" + UserStatsManager.currYear);
-	}
+    public static DatabaseReference Curriculum()
+    {
+        return baseRef.Child("curriculum");
+    }    
 }
