@@ -17,6 +17,8 @@ public class FormManager : MonoBehaviour
     public InputField signInEmailInput, resetPasswordEmailInput;
     public InputField signInPasswordInput = null;
     public Button signUpButton, signInButton, signUpShowPassButton, signInShowPassButton, nextButton, resetPassButton, policyButton;
+    public Image passEyeImageSignUp, passEyeImageSignIn;
+    public Sprite passEyeSpriteFilled, passEyeSpriteNormal;
     public AuthManager authManager;
 
     void Start()
@@ -29,13 +31,11 @@ public class FormManager : MonoBehaviour
         signUpShowPassButton.onClick.AddListener(() => ToggleSignUpPasswordInputType());
         signInShowPassButton.onClick.AddListener(() => ToggleSignInPasswordInputType());
     }
-
-    // Update is called once per frame
+    
     void Update()
-    {
-        ValidateEmailSignUp();
+    {        
         ValidateEmailSignIn();
-        ValidatePasswordSignUp();
+        ValidateEmailPasswordSignUp();
         ValidateEmailResetPassword();
     }
 
@@ -55,31 +55,19 @@ public class FormManager : MonoBehaviour
     {
         authManager.ResetPasswordWithEmail(resetPasswordEmailInput.text);
         Debug.Log("Reset Password With Email");
-    }
+    }    
 
-    private void ValidateEmailSignUp()
+    private void ValidateEmailPasswordSignUp()
     {
+        string password = signUpPasswordInput.text;
         string email = signUpEmailInput.text;        
         var regexPattern =
             @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
 		    + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
 		    + @"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
 		    + @"([a-zA-Z]+[\w-]+\.)+[a-zA-Z]{2,4})$";
-                
-        if(email != "" && Regex.IsMatch(email, regexPattern))
-        {
-            ToggleNextButtonStates(true);
-        }
-        else
-        {
-            ToggleNextButtonStates(false);
-        }        
-    }
 
-    private void ValidatePasswordSignUp()
-    {
-        string password = signUpPasswordInput.text;
-        if(password.Length >= 6)
+        if(email != "" && Regex.IsMatch(email, regexPattern) && password.Length >= 6)
         {
             ToggleSignUpButtonStates(true);
         }
@@ -152,8 +140,12 @@ public class FormManager : MonoBehaviour
         if (signUpPasswordInput != null) {
             if (signUpPasswordInput.contentType == InputField.ContentType.Password) {
                 signUpPasswordInput.contentType = InputField.ContentType.Standard;
+                
+                passEyeImageSignUp.sprite = passEyeSpriteFilled;
             } else {
                 signUpPasswordInput.contentType = InputField.ContentType.Password;
+
+                passEyeImageSignUp.sprite = passEyeSpriteNormal;
             }
             signUpPasswordInput.ForceLabelUpdate ();
         }
@@ -163,8 +155,12 @@ public class FormManager : MonoBehaviour
         if (signInPasswordInput != null) {
             if (signInPasswordInput.contentType == InputField.ContentType.Password) {
                 signInPasswordInput.contentType = InputField.ContentType.Standard;
+
+                passEyeImageSignIn.sprite = passEyeSpriteFilled;
             } else {
                 signInPasswordInput.contentType = InputField.ContentType.Password;
+
+                passEyeImageSignIn.sprite = passEyeSpriteNormal;
             }
             signInPasswordInput.ForceLabelUpdate ();
         }

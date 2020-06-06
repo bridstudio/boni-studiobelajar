@@ -14,6 +14,7 @@ public class UserStatsBoardManager : MonoBehaviour
     public List<UserStats> userStatsList = new List<UserStats>();
     public GameObject rowPrefab, scrollContainer, dialogLoading;
     public Text childCountText;
+    public GameObject infoGameObject;
 
     public void Awake()
     {
@@ -64,4 +65,8 @@ public class UserStatsBoardManager : MonoBehaviour
         OpenDialogLoading(false);
     }
 
+    public void DestroyInfoGameObject()
+    {
+        Destroy(infoGameObject);
+    }
 }

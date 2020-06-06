@@ -24,7 +24,7 @@ public class LoadImageCurriculumFirebase : MonoBehaviour
         storage = FirebaseStorage.DefaultInstance;
         
         curriculumID = curriculumRowConfig.GetComponent<CurriculumRowConfig>().id.text;
-        imageStorage_ref = storage.GetReferenceFromUrl("gs://boni-studiobelajaranak.appspot.com/public/app-curriculum/BridStudio-Logo" + curriculumID + ".jpg");        
+        imageStorage_ref = storage.GetReferenceFromUrl("gs://boni-studiobelajaranak.appspot.com/public/app-curriculum/image" + curriculumID + ".jpg");
         
         DownloadImage();
     }

@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 public class AutoLoginManager : MonoBehaviour
 {
-    FirebaseAuth auth;
+    FirebaseAuth auth;    
     
     async void Awake()
     {
@@ -54,18 +54,44 @@ public class AutoLoginManager : MonoBehaviour
             {            
                 await Router.UserEmailVerifiedNode(currUser.UserId).SetValueAsync("Verified");
                 Debug.Log("Email Verified");
-                Invoke("LoadAppHomeScene", 3.0f);
+                
+                Invoke("CheckChildName", 2.0f);                
             }
             else if(!currUser.IsEmailVerified)
             {
                 Debug.Log("Please verify your email address");
-                Invoke("LoadAppHomeScene", 3.0f);
+                
+                Invoke("CheckChildName", 2.0f);                
             }
         }
         catch(Exception ex)
         {
             Debug.Log(ex.InnerException.Message);
         }        
+    }
+
+    private async void CheckChildName()
+    {
+        FirebaseUser currUser = auth.CurrentUser;
+        try
+        {
+            var userChildName = await Router.UserChildNameNode(currUser.UserId).GetValueAsync();
+            
+            if(userChildName.Value.ToString() == "")
+            {
+                Invoke("LoadAppChildInfoScene", 2.0f);
+                SceneManager.LoadScene("App_ChildInfo");
+            }
+            else
+            {
+                Invoke("LoadAppHomeScene", 2.0f);
+                SceneManager.LoadScene("App_Home");
+            }
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError(ex.InnerException.Message);
+        }
     }
 
     private void LoadAppRegistScene()
@@ -79,4 +105,10 @@ public class AutoLoginManager : MonoBehaviour
         Debug.Log("Load App_Home Menu");
         SceneManager.LoadScene("App_Home");
     }
+    
+    private void LoadAppChildInfoScene()
+    {
+        Debug.Log("Load App_ChildInfo Menu");
+        SceneManager.LoadScene("App_ChildInfo");
+    }    
 }

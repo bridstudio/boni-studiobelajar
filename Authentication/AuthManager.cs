@@ -29,7 +29,12 @@ public class AuthManager : MonoBehaviour
             RequestEmail = true,
             RequestIdToken = true
         };
-    }        
+    }
+
+    private void Start()
+    {
+        Destroy(GameObject.Find("_UserManager(Clone)"));        
+    }
 
     public void SignInWithGoogle()
     {
@@ -126,22 +131,28 @@ public class AuthManager : MonoBehaviour
         try
         {
             Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
-            if(credential != null)
-            {
-                FirebaseUser newUser = await auth.SignInWithCredentialAsync(credential);
-                UpdateStatusSignIn("User with Google SignIn: " + newUser.Email + " " + newUser.UserId);
-                FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLogin);
+            
+            FirebaseUser newUser = await auth.SignInWithCredentialAsync(credential);
+            UpdateStatusSignIn("User with Google SignIn: " + newUser.Email + " " + newUser.UserId);
+            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLogin);
+                
+            // Checking email key node under users/userId exists or not
+            var emailVar = await Router.UserWithUID(newUser.UserId).Child("email").GetValueAsync();
 
-                // Post to Firebase Database
-				UserManager.emailVerified = "Verified";
-                UserManager.authType = "Google";
-				UserManager.email = newUser.Email;
-                PostToDatabase(newUser.UserId);
+            if(emailVar.Exists)
+            {
                 SceneManager.LoadScene("App_Splash");
             }
             else
             {
-                UpdateStatusSignIn("SignIn with Google credential = null!");
+                // Post to Firebase Database
+                UserManager.emailVerified = "Verified";
+                UserManager.authType = "Google";
+                UserManager.email = newUser.Email;
+                UserManager.levelUnlocked = "1";
+
+                PostToDatabase(newUser.UserId);
+                SceneManager.LoadScene("App_Splash");
             }
         }
         catch(AggregateException ex)
@@ -214,6 +225,7 @@ public class AuthManager : MonoBehaviour
                 UserManager.emailVerified = "Unverified";
 				UserManager.authType = "Email";
 				UserManager.email = currUser.Email;
+                UserManager.levelUnlocked = "1";
                 PostToDatabase(currUser.UserId);
 
                 // Load scene
@@ -231,20 +243,7 @@ public class AuthManager : MonoBehaviour
             UpdateStatusSignUp(ex.InnerException.Message);
             CloseDialogEmailVerif();
         }
-    }
-
-    private void CheckEmailVerified()
-    {
-        var currUser = auth.CurrentUser;
-        if(currUser.IsEmailVerified)
-        {
-            // Router.UsersEmailVerifiedNode(currUser.UserId).SetValueAsync("Verified");
-        }
-        else
-        {
-            UpdateStatusSignIn("Please verify your email address");
-        }
-    }
+    }    
 
     public async void ResetPasswordWithEmail(string email)
     {

@@ -29,15 +29,15 @@ public class RowConfig : MonoBehaviour
     {
         if(this.sceneName.text == "App_Home")
         {
-            tabImage.color = new Color32(41, 149, 164, 255);
+            tabImage.color = new Color32(232, 61, 76, 255);
         }
         else if(this.sceneName.text == "App_Game")
         {
-            tabImage.color = new Color32(255, 124, 0, 255);
+            tabImage.color = new Color32(55, 71, 79, 255);
         }
         else if(this.sceneName.text == "App_Stats")
         {
-            tabImage.color = new Color32(8, 212, 117, 255);
+            tabImage.color = new Color32(0, 117, 219, 255);
         }
     }
 }

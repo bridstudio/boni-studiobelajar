@@ -10,6 +10,7 @@ public class CurriculumBoardManager : MonoBehaviour
     public List<Curriculum> curriculumList = new List<Curriculum>();
     public GameObject rowPrefab, scrollContainer, dialogLoading;
     public Text childCountText;
+    public GameObject infoGameObject;
 
     public void Awake()
     {
@@ -58,5 +59,10 @@ public class CurriculumBoardManager : MonoBehaviour
         newRow.transform.SetParent(scrollContainer.transform, false);
 
         OpenDialogLoading(false);
+    }
+
+    public void DestroyInfoGameObject()
+    {
+        Destroy(infoGameObject);
     }
 }

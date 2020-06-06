@@ -29,6 +29,11 @@ public class Router : MonoBehaviour
 		return baseRef.Child("user").Child(uid).Child("emailVerified");
 	}
 
+    public static DatabaseReference UserChildNameNode(string uid)
+	{
+		return baseRef.Child("user").Child(uid).Child("childName");
+	}
+
     public static DatabaseReference UserStats()
     {
       	return baseRef.Child("userStats");

@@ -6,18 +6,13 @@ using Firebase.Auth;
 public class SendStatistics : MonoBehaviour
 {
     FirebaseAuth auth;
-    FirebaseUser user;
+    FirebaseUser user;    
 
     void Awake()
     {
         auth = FirebaseAuth.DefaultInstance;
         user = auth.CurrentUser;
-    }
-
-    void Start()
-    {
-        // DatabaseManager.sharedInstance.GetUserStats(user.UserId);
-    }
+    }    
 
     public void SendStats()
     {
@@ -29,5 +24,5 @@ public class SendStatistics : MonoBehaviour
         UserStats userStats = new UserStats();
         DatabaseManager.sharedInstance.CreateNewUserStats(userStats, uid);
         Debug.Log("Sending UserStats");        
-    }
+    }    
 }
