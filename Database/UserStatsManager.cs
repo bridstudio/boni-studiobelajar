@@ -10,7 +10,7 @@ public class UserStatsManager : MonoBehaviour
     DateTime m_currentDate = DateTime.Now;
 
     public static string exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch;
-    public static string sceneName, dateTime, currHour, currMinute, currSecond, currDay, currMonth, currYear;
+    public static string sceneName, dateTime, clockTime, currHour, currMinute, currSecond, currDay, currMonth, currYear;
 
     void Start()
     {
@@ -24,12 +24,13 @@ public class UserStatsManager : MonoBehaviour
         currMinute = m_currentDate.Minute.ToString();
         currSecond = m_currentDate.Second.ToString();
 
-        dateTime = currHour + ":" + currMinute + ":" + currSecond + "_" + currDay + "-" + currMonth + "-" + currYear;
-        timerOnTouch = "10";
-        timerIdle = "10";
-        shapeSelected = "10";
-        exitButtonPressed = "10";
-        restartButtonPressed = "10";
-        failedCount = "10";
+        dateTime = currDay + "-" + currMonth + "-" + currYear;
+        clockTime = currHour + ":" + currMinute + ":" + currSecond; 
+        timerOnTouch = "";
+        timerIdle = "";
+        shapeSelected = "";
+        exitButtonPressed = "";
+        restartButtonPressed = "";
+        failedCount = "";
     }
 }

@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class RowConfig : MonoBehaviour
 {
-    public Text dateTime, exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch, sceneName;
+    public Text dateTime, clockTime, exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch, sceneName;
     public Image tabImage;
 
     public void Initialise(UserStats userStats)
     {
         this.dateTime.text = userStats.dateTime;
+        this.clockTime.text = userStats.clockTime;
         this.exitButtonPressed.text = userStats.exitButtonPressed;
         this.failedCount.text = userStats.failedCount;
         this.restartButtonPressed.text = userStats.restartButtonPressed;
@@ -27,15 +28,15 @@ public class RowConfig : MonoBehaviour
 
     public void ChangeTabColor()
     {
-        if(this.sceneName.text == "App_Home")
+        if(this.sceneName.text == "GameColoring")
         {
             tabImage.color = new Color32(232, 61, 76, 255);
         }
-        else if(this.sceneName.text == "App_Game")
+        else if(this.sceneName.text == "Drag-N-Drop")
         {
             tabImage.color = new Color32(55, 71, 79, 255);
         }
-        else if(this.sceneName.text == "App_Stats")
+        else if(this.sceneName.text == "Game")
         {
             tabImage.color = new Color32(0, 117, 219, 255);
         }

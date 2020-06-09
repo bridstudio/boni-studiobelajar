@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UserStats
 {
-    public string dateTime;
+    public string dateTime, clockTime;
     public string exitButtonPressed;
     public string failedCount;
     public string restartButtonPressed;
@@ -16,6 +16,7 @@ public class UserStats
     public UserStats()
     {
         dateTime = UserStatsManager.dateTime;
+        clockTime = UserStatsManager.clockTime;
         sceneName = UserStatsManager.sceneName;
         exitButtonPressed = UserStatsManager.exitButtonPressed;
         failedCount = UserStatsManager.failedCount;
@@ -28,6 +29,7 @@ public class UserStats
     public UserStats(IDictionary<string, object> dict)
     {
         this.dateTime = dict["dateTime"].ToString();
+        this.clockTime = dict["clockTime"].ToString();
         this.sceneName = dict["sceneName"].ToString();
         this.exitButtonPressed = dict["exitButtonPressed"].ToString();
         this.failedCount = dict["failedCount"].ToString();
