@@ -47,5 +47,15 @@ public class Router : MonoBehaviour
     public static DatabaseReference Curriculum()
     {
         return baseRef.Child("curriculum");
-    }    
+    }
+
+    public static DatabaseReference Post()
+    {
+        return baseRef.Child("post");
+    }
+
+    public static DatabaseReference PostWithUID(string uid)
+    {
+        return baseRef.Child("post").Child(uid);
+    }
 }

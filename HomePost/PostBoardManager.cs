@@ -2,30 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Firebase;
-using Firebase.Database;
 
-public class CurriculumBoardManager : MonoBehaviour
+public class PostBoardManager : MonoBehaviour
 {
-    public List<Curriculum> curriculumList = new List<Curriculum>();
+    public List<Post> postList = new List<Post>();
     public GameObject rowPrefab, scrollContainer, dialogLoading;
-    public Text childCountText;
+    public Text childCountText; // childCountText to check whether there is a data in server or not
     public GameObject infoGameObject;
 
     public void Awake()
     {
-        curriculumList.Clear();
+        postList.Clear();
 
-        OpenDialogLoading(true);        
+        OpenDialogLoading(true);
 
-        DatabaseManager.sharedInstance.GetCurriculum(result =>
+        DatabaseManager.sharedInstance.GetPost(result =>
         {
-            curriculumList = result;
+            postList = result;
 
             InitialiseUI();
         });
+    }
 
-        // Router.Curriculum().LimitToFirst(1);
+    private void Start()
+    {
+        Screen.fullScreen = false;
+        Screen.orientation = ScreenOrientation.Portrait;
     }
 
     public void OpenDialogLoading(bool dialog)
@@ -35,13 +37,13 @@ public class CurriculumBoardManager : MonoBehaviour
 
     void InitialiseUI()
     {
-        if(curriculumList.Count > 0)
+        if(postList.Count > 0)
         {
             childCountText.text = "";
 
-            foreach(Curriculum curriculum in curriculumList)
+            foreach(Post post in postList)
             {
-                CreateRow(curriculum);
+                CreateRow(post);
             }
         }
         else
@@ -51,11 +53,11 @@ public class CurriculumBoardManager : MonoBehaviour
         }
     }
 
-    void CreateRow(Curriculum curriculum)
+    void CreateRow(Post post)
     {
         GameObject newRow = Instantiate(rowPrefab) as GameObject;
 
-        newRow.GetComponent<CurriculumRowConfig>().Initialise(curriculum);
+        newRow.GetComponent<PostRowConfig>().Initialise(post);
         newRow.transform.SetParent(scrollContainer.transform, false);
 
         OpenDialogLoading(false);

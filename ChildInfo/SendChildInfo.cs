@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 using Firebase.Auth;
 using Firebase.Analytics;
 using MaterialUI;
+using GooglePlayGames;
+using UnityEngine.SocialPlatforms;
 
 public class SendChildInfo : MonoBehaviour
 {
@@ -83,11 +85,16 @@ public class SendChildInfo : MonoBehaviour
     {
         try
         {
-            OpenDialogLoading();
+            OpenDialogLoading();            
             
             await Router.UserWithUID(user.UserId).Child("childName").SetValueAsync(inputChildName.text);
             await Router.UserWithUID(user.UserId).Child("childAge").SetValueAsync(childAgeString);
             await Router.UserWithUID(user.UserId).Child("childGender").SetValueAsync(childGenderString);                        
+            
+            // Social.ReportProgress("CgkIq5WRl80GEAIQAQ", 100.0f, (bool success) =>
+            // {
+            //     Debug.Log("Success Google Play Games 'Welcome' ");
+            // });
             
             CloseDialogLoading();
 

@@ -49,12 +49,9 @@ public class DatabaseManager : MonoBehaviour
 			DataSnapshot userStats = await Router.UserStatsWithUID(auth.CurrentUser.UserId).GetValueAsync();
 
 			foreach(DataSnapshot userStatsNode in userStats.Children)
-			{
-				// var userStatsDict = userStatsNode.Value as Dictionary<string, object>;
+			{				
 				var userStatsDict = (IDictionary<string, object>)userStatsNode.Value;				
-				UserStats newUser = new UserStats(userStatsDict);
-
-				// Debug.Log ("Firebase: " + userStatsDict["dateTime"] + " - " + "Firebase: " + userStatsDict["sceneName"] + " - " + "Firebase: " + userStatsDict["exitButtonPressed"] + " - " + userStatsDict["failedCount"] + " - " + userStatsDict["restartButtonPressed"] + " - " + userStatsDict["shapeSelected"] + " - " + userStatsDict["timerIdle"] + " - " + userStatsDict["timerOnTouch"]);
+				UserStats newUser = new UserStats(userStatsDict);				
 
 				tempList.Add(newUser);
 			}
@@ -92,5 +89,34 @@ public class DatabaseManager : MonoBehaviour
         {
             Debug.LogError(ex.InnerException.Message);
         }
+    }
+
+    public void CreateNewPost(Post post)
+    {
+        string postJSON = JsonUtility.ToJson(post);
+        Router.Post().Push().SetRawJsonValueAsync(postJSON);        
+    }
+
+    public async void GetPost(Action<List<Post>> completionBlock)
+    {
+        List<Post> tempList = new List<Post>();
+        
+        try
+        {
+            DataSnapshot post = await Router.Post().GetValueAsync();
+
+            foreach(DataSnapshot postNode in post.Children)
+            {
+                var postDict = (IDictionary<string, object>)postNode.Value;
+                Post newPost = new Post(postDict);
+                tempList.Add(newPost);
+            }
+
+            completionBlock(tempList);
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError(ex.InnerException.Message);
+        }        
     }
 }

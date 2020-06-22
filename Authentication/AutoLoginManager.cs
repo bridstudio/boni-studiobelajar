@@ -5,8 +5,10 @@ using UnityEngine;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Analytics;
-using Firebase.Database;
+using Firebase.Messaging;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
+using GooglePlayGames;
 
 public class AutoLoginManager : MonoBehaviour
 {
@@ -27,6 +29,19 @@ public class AutoLoginManager : MonoBehaviour
     private void Start()
     {
         Screen.fullScreen = false;
+        // PlayGamesPlatform.Activate();
+        FirebaseMessaging.TokenReceived += OnTokenReceived;
+        FirebaseMessaging.MessageReceived += OnMessageReceived;
+    }
+
+    public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
+    {
+        Debug.Log("Received Registration Token: " + token.Token);
+    }
+
+    public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+    {
+        Debug.Log("Received a new message from: " + e.Message.From);
     }
 
     private void CheckAuthUser()
@@ -35,6 +50,15 @@ public class AutoLoginManager : MonoBehaviour
         if(currUser != null)
         {
             CheckEmailVerified();
+
+            // Social.localUser.Authenticate((bool success) =>
+            // {
+            //     if(success)
+            //     {
+            //         // ((GooglePlayGames.PlayGamesPlatform)Social.Active).SetGravityForPopups(gravity.bot);
+            //         Debug.Log("Success GooglePlayGames");
+            //     }
+            // });
 
             Debug.LogFormat("User Signed-In successfully {0} {1}",
                 currUser.Email, currUser.UserId);            
@@ -55,13 +79,13 @@ public class AutoLoginManager : MonoBehaviour
                 await Router.UserEmailVerifiedNode(currUser.UserId).SetValueAsync("Verified");
                 Debug.Log("Email Verified");
                 
-                Invoke("CheckChildName", 2.0f);                
+                Invoke("CheckChildName", 1.0f);                
             }
             else if(!currUser.IsEmailVerified)
             {
                 Debug.Log("Please verify your email address");
                 
-                Invoke("CheckChildName", 2.0f);                
+                Invoke("CheckChildName", 1.0f);                
             }
         }
         catch(Exception ex)
@@ -79,13 +103,11 @@ public class AutoLoginManager : MonoBehaviour
             
             if(userChildName.Value.ToString() == "")
             {
-                Invoke("LoadAppChildInfoScene", 2.0f);
-                SceneManager.LoadScene("App_ChildInfo");
+                Invoke("LoadAppChildInfoScene", 2.0f);                
             }
             else
             {
-                Invoke("LoadAppHomeScene", 2.0f);
-                SceneManager.LoadScene("App_Home");
+                Invoke("LoadAppSplashGateScene", 2.0f);                
             }
         }
         catch(Exception ex)
@@ -100,10 +122,10 @@ public class AutoLoginManager : MonoBehaviour
         SceneManager.LoadScene("App_Registration");
     }
 
-    private void LoadAppHomeScene()
+    private void LoadAppSplashGateScene()
     {
-        Debug.Log("Load App_Home Menu");
-        SceneManager.LoadScene("App_Home");
+        Debug.Log("Load AppSplashGate Menu");
+        SceneManager.LoadScene("App_SplashGate");
     }
     
     private void LoadAppChildInfoScene()

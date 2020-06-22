@@ -58,7 +58,7 @@ public class AuthManager : MonoBehaviour
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
 
-        UpdateStatusSignIn("Calling SignIn with Google");
+        UpdateStatusSignIn("Loading....");
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnAuthenticationFinished);
     }
 
@@ -121,7 +121,7 @@ public class AuthManager : MonoBehaviour
         }
         else
         {
-            UpdateStatusSignIn("Update to FirebaseAuth with Google");
+            // UpdateStatusSignIn("Update to FirebaseAuth with Google");
             SignInWithGoogleOnFirebase(task.Result.IdToken);
         }
     }
@@ -133,7 +133,7 @@ public class AuthManager : MonoBehaviour
             Credential credential = GoogleAuthProvider.GetCredential(idToken, null);
             
             FirebaseUser newUser = await auth.SignInWithCredentialAsync(credential);
-            UpdateStatusSignIn("User with Google SignIn: " + newUser.Email + " " + newUser.UserId);
+            // UpdateStatusSignIn("User with Google SignIn: " + newUser.Email + " " + newUser.UserId);
             FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLogin);
                 
             // Checking email key node under users/userId exists or not

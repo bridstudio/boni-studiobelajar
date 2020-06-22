@@ -30,15 +30,15 @@ public class RowConfig : MonoBehaviour
     {
         if(this.sceneName.text == "GameColoring")
         {
-            tabImage.color = new Color32(232, 61, 76, 255);
+            tabImage.color = new Color32(253, 215, 52, 255);
         }
         else if(this.sceneName.text == "Drag-N-Drop")
         {
-            tabImage.color = new Color32(55, 71, 79, 255);
+            tabImage.color = new Color32(140, 206, 220, 255);
         }
         else if(this.sceneName.text == "Game")
         {
-            tabImage.color = new Color32(0, 117, 219, 255);
+            tabImage.color = new Color32(1, 229, 92, 255);
         }
     }
 }
