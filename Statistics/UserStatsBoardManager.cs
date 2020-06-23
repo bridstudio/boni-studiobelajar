@@ -51,7 +51,7 @@ public class UserStatsBoardManager : MonoBehaviour
         else
         {
             OpenDialogLoading(false);
-            childCountText.text = "Sorry, there was no data available";
+            childCountText.text = "Maaf, belum ada data yang tersedia. Coba mainkan beberapa permainan";
         }
     }
 

@@ -76,7 +76,7 @@ public class AutoLoginManager : MonoBehaviour
         {
             if(currUser.IsEmailVerified)
             {            
-                await Router.UserEmailVerifiedNode(currUser.UserId).SetValueAsync("Verified");
+                await Router.UserEmailVerifiedNode(currUser.UserId).SetValueAsync("Email Terverikasi");
                 Debug.Log("Email Verified");
                 
                 Invoke("CheckChildName", 1.0f);                

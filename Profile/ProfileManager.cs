@@ -30,7 +30,7 @@ public class ProfileManager : MonoBehaviour
         email.text = UserManager.email;
         emailVerified.text = UserManager.emailVerified;
         childName.text = UserManager.childName;
-        childAge.text = UserManager.childAge + " years old";
+        childAge.text = UserManager.childAge + " tahun";
         childGender.text = UserManager.childGender;
         levelUnlocked.text = UserManager.levelUnlocked;
 

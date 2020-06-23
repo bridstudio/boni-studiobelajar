@@ -13,13 +13,18 @@ public class LoadImagePost : MonoBehaviour
     public GameObject postImage;
     public GameObject dialogLoading;
     public GameObject postRowConfig;
+    private string _imageUrl;    
 
     void Start()
     {
+        _imageUrl = postRowConfig.GetComponent<PostRowConfig>().imageUrl.text.ToString();
         OpenDialogLoading(true);
         // string pushKey = Router.Post().Push().Key;
         storage = FirebaseStorage.DefaultInstance;
-        imageStorage_ref = storage.GetReferenceFromUrl(PostManager.imageUrl);
+        imageStorage_ref = storage.GetReferenceFromUrl("gs://boni-studiobelajaranak.appspot.com/public/app-home/image/" + _imageUrl + ".jpg");
+        Debug.Log(imageStorage_ref);
+
+        DownloadingImage();
     }
 
     private void OpenDialogLoading(bool dialog)
@@ -59,6 +64,7 @@ public class LoadImagePost : MonoBehaviour
 
                 Transform thumbnail = postImage.transform;
                 thumbnail.GetComponent<Image>().sprite = sprite;
+                thumbnail.GetComponent<Image>().SetNativeSize();
             }
         }
     }

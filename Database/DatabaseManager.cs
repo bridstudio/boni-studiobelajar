@@ -103,7 +103,7 @@ public class DatabaseManager : MonoBehaviour
         
         try
         {
-            DataSnapshot post = await Router.Post().GetValueAsync();
+            DataSnapshot post = await Router.Post().OrderByChild("postDate").LimitToLast(10).GetValueAsync();
 
             foreach(DataSnapshot postNode in post.Children)
             {

@@ -11,9 +11,7 @@ public class SplashGateManager : MonoBehaviour
     public Button kidsPlayButton, parentsModeButton;
 
     void Start()
-    {
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
-        
+    {        
         GameObject newUserManager = Instantiate(userManager) as GameObject;
         kidsPlayButton.onClick.AddListener(() => LoadAppPlay());
         parentsModeButton.onClick.AddListener(() => LoadParentalGatePortrait());

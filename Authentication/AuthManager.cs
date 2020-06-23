@@ -146,7 +146,7 @@ public class AuthManager : MonoBehaviour
             else
             {
                 // Post to Firebase Database
-                UserManager.emailVerified = "Verified";
+                UserManager.emailVerified = "Email Terverifikasi";
                 UserManager.authType = "Google";
                 UserManager.email = newUser.Email;
                 UserManager.levelUnlocked = "1";
@@ -199,7 +199,7 @@ public class AuthManager : MonoBehaviour
             CloseDialogLoading();
 
             // Load scene
-            UpdateStatusSignIn("Loading scene...");
+            UpdateStatusSignIn("Loading...");
             SceneManager.LoadScene("App_Splash");
         }
         catch(Exception ex)
@@ -219,10 +219,10 @@ public class AuthManager : MonoBehaviour
                 await currUser.SendEmailVerificationAsync();
                 OpenDialogEmailVerif();
 
-                UpdateStatusSignUp("Email verification sent to: " + currUser.Email);                
+                // UpdateStatusSignUp("Email verification sent to: " + currUser.Email);                
 
                 // Post to Database
-                UserManager.emailVerified = "Unverified";
+                UserManager.emailVerified = "Email Belum Diverifikasi";
 				UserManager.authType = "Email";
 				UserManager.email = currUser.Email;
                 UserManager.levelUnlocked = "1";
@@ -234,7 +234,7 @@ public class AuthManager : MonoBehaviour
             }
             else
             {
-                UpdateStatusSignUp("Send Email verification failed, please Sign Up again.");
+                UpdateStatusSignUp("Pengiriman verifikasi Email gagal, mohon Daftar kembali.");
                 CloseDialogEmailVerif();
             }
         }
@@ -254,12 +254,12 @@ public class AuthManager : MonoBehaviour
             await auth.SendPasswordResetEmailAsync(email);
             CloseDialogLoading();            
 
-            UpdateStatusResetPass("Password Reset Email has been sent, please check your email");
+            // UpdateStatusResetPass("Password Reset Email has been sent, please check your email");
             OpenDialogResetPass();
         }
         catch(Exception ex)
         {
-            UpdateStatusResetPass("Wrong Email Address");
+            UpdateStatusResetPass("Email yang dimasukkan salah/tidak terdaftar.");
             CloseDialogLoading();
             Debug.Log(ex.InnerException.Message);            
         }

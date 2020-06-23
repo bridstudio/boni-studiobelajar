@@ -144,11 +144,11 @@ public class SendChildInfo : MonoBehaviour
     {
         if(childGender == 0)
         {
-            childGenderString = "Boy";            
+            childGenderString = "Laki-laki";            
         }
         else if(childGender == 1)
         {
-            childGenderString = "Girl";
+            childGenderString = "Perempuan";
         }        
 
         for (int i = 0; i < buttonChildGenderColor.Length; i++)

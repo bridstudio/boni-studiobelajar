@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-using Firebase;
+using UnityEngine.SceneManagement;
 using Firebase.Storage;
 using Firebase.Database;
 
@@ -15,18 +15,42 @@ public class LoadImageCurriculumFirebase : MonoBehaviour
     public GameObject logoImage;
     public GameObject dialogLoading;    
     public GameObject curriculumRowConfig;
-    private string curriculumID;    
+    public Button playButton;
+    private string curriculumID, sceneToLoad;    
 
     void Start()
     {        
         OpenDialogLoading(true);
+        playButton.onClick.AddListener(() => LoadGameScene());
 
         storage = FirebaseStorage.DefaultInstance;
         
-        curriculumID = curriculumRowConfig.GetComponent<CurriculumRowConfig>().id.text;
+        curriculumID = curriculumRowConfig.GetComponent<CurriculumRowConfig>().id.text.ToString();
         imageStorage_ref = storage.GetReferenceFromUrl("gs://boni-studiobelajaranak.appspot.com/public/app-curriculum/image" + curriculumID + ".jpg");
         
         DownloadImage();
+        SceneToLoadString();
+    }    
+    
+    private void SceneToLoadString()
+    {
+        if(curriculumID == "1")
+        {
+            sceneToLoad = "AlbumColoring";
+        }
+        else if(curriculumID == "2")
+        {
+            sceneToLoad = "Drag-N-Drop";
+        }
+        else if(curriculumID == "3")
+        {
+            sceneToLoad = "Album";
+        }
+    }
+
+    private void LoadGameScene()
+    {
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     public void OpenDialogLoading(bool dialog)

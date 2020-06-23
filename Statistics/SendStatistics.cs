@@ -9,7 +9,7 @@ public class SendStatistics : MonoBehaviour
 {
     FirebaseAuth auth;
     FirebaseUser user;
-    private string childAge, childGender, sceneName;
+    private string childAge, childGender, sceneName, userId;
     private string exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch;
     private readonly string BASE_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScCbef4b63ABhW0_wQ1iK67aIiOba9d1PNDDkIYRmDZxS6GNA/formResponse";
 
@@ -69,11 +69,12 @@ public class SendStatistics : MonoBehaviour
         sceneName = UserStatsManager.sceneName;
         childAge = UserManager.childAge;
         childGender = UserManager.childGender;
+        userId = user.UserId;
 
-        StartCoroutine(PostToGoogleForms(exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch, sceneName, childAge, childGender));
+        StartCoroutine(PostToGoogleForms(exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch, sceneName, childAge, childGender, userId));
     }
 
-    IEnumerator PostToGoogleForms(string exitButtonPressed, string failedCount, string restartButtonPressed, string shapeSelected, string timerIdle, string timerOnTouch, string sceneName, string childAge, string childGender)
+    IEnumerator PostToGoogleForms(string exitButtonPressed, string failedCount, string restartButtonPressed, string shapeSelected, string timerIdle, string timerOnTouch, string sceneName, string childAge, string childGender, string userId)
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.1198210276", exitButtonPressed);
@@ -85,6 +86,7 @@ public class SendStatistics : MonoBehaviour
         form.AddField("entry.1132375022", sceneName);
         form.AddField("entry.374704517", childAge);
         form.AddField("entry.2096971648", childGender);
+        form.AddField("YPqjbf", userId);
 
         byte[] rawData = form.data;
         WWW www = new WWW(BASE_URL, rawData);
