@@ -149,7 +149,7 @@ public class AuthManager : MonoBehaviour
                 UserManager.emailVerified = "Email Terverifikasi";
                 UserManager.authType = "Google";
                 UserManager.email = newUser.Email;
-                UserManager.levelUnlocked = "1";
+                UserManager.levelUnlocked = "3";
 
                 PostToDatabase(newUser.UserId);
                 SceneManager.LoadScene("App_Splash");
@@ -225,7 +225,7 @@ public class AuthManager : MonoBehaviour
                 UserManager.emailVerified = "Email Belum Diverifikasi";
 				UserManager.authType = "Email";
 				UserManager.email = currUser.Email;
-                UserManager.levelUnlocked = "1";
+                UserManager.levelUnlocked = "3";
                 PostToDatabase(currUser.UserId);
 
                 // Load scene

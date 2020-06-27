@@ -5,14 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class SplashGateManager : MonoBehaviour
-{
-    public GameObject userManager;
+{    
     public Text childNameText;
     public Button kidsPlayButton, parentsModeButton;
 
     void Start()
-    {        
-        GameObject newUserManager = Instantiate(userManager) as GameObject;
+    {
         kidsPlayButton.onClick.AddListener(() => LoadAppPlay());
         parentsModeButton.onClick.AddListener(() => LoadParentalGatePortrait());
 
