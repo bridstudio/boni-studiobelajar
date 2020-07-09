@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class RowConfig : MonoBehaviour
 {
-    public Text dateTime, clockTime, exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch, sceneName;
+    public Text dateTime, clockTime, progressCompletion, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch, sceneName;
     public Image tabImage;
 
     public void Initialise(UserStats userStats)
     {
         this.dateTime.text = userStats.dateTime;
         this.clockTime.text = userStats.clockTime;
-        this.exitButtonPressed.text = userStats.exitButtonPressed;
+        this.progressCompletion.text = userStats.progressCompletion.ToString();
         this.failedCount.text = userStats.failedCount;
         this.restartButtonPressed.text = userStats.restartButtonPressed;
         this.shapeSelected.text = userStats.shapeSelected;

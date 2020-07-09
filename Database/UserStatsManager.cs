@@ -10,6 +10,7 @@ public class UserStatsManager : MonoBehaviour
     DateTime m_currentDate = DateTime.Now;
 
     public static string exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch;
+    public static int progressCompletion;
     public static string sceneName, dateTime, clockTime, currHour, currMinute, currSecond, currDay, currMonth, currYear;
 
     void Start()
@@ -32,5 +33,6 @@ public class UserStatsManager : MonoBehaviour
         exitButtonPressed = "";
         restartButtonPressed = "";
         failedCount = "";
+        progressCompletion = 0;
     }
 }

@@ -10,7 +10,8 @@ public class SendStatistics : MonoBehaviour
     FirebaseAuth auth;
     FirebaseUser user;
     private string childAge, childGender, sceneName, userId;
-    private string exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch;
+    private string failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch;
+    private int progressCompletion;
     private readonly string BASE_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLScCbef4b63ABhW0_wQ1iK67aIiOba9d1PNDDkIYRmDZxS6GNA/formResponse";
 
     void Awake()
@@ -32,7 +33,7 @@ public class SendStatistics : MonoBehaviour
             DatabaseManager.sharedInstance.CreateNewUserStats(userStats, uid);
             Debug.Log("Sending UserStats");
 
-            UpdateLevel();
+            // UpdateLevel();
             SendToGoogleForms();
         }
         catch(Exception ex)
@@ -59,7 +60,7 @@ public class SendStatistics : MonoBehaviour
 
     private void SendToGoogleForms()
     {
-        exitButtonPressed = UserStatsManager.exitButtonPressed;
+        progressCompletion = UserStatsManager.progressCompletion;
         failedCount = UserStatsManager.failedCount;
         restartButtonPressed = UserStatsManager.restartButtonPressed;
         shapeSelected = UserStatsManager.shapeSelected;
@@ -71,13 +72,13 @@ public class SendStatistics : MonoBehaviour
         childGender = UserManager.childGender;
         userId = user.UserId;
 
-        StartCoroutine(PostToGoogleForms(exitButtonPressed, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch, sceneName, childAge, childGender, userId));
+        StartCoroutine(PostToGoogleForms(progressCompletion, failedCount, restartButtonPressed, shapeSelected, timerIdle, timerOnTouch, sceneName, childAge, childGender, userId));
     }
 
-    IEnumerator PostToGoogleForms(string exitButtonPressed, string failedCount, string restartButtonPressed, string shapeSelected, string timerIdle, string timerOnTouch, string sceneName, string childAge, string childGender, string userId)
+    IEnumerator PostToGoogleForms(int progressCompletion, string failedCount, string restartButtonPressed, string shapeSelected, string timerIdle, string timerOnTouch, string sceneName, string childAge, string childGender, string userId)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.1198210276", exitButtonPressed);
+        form.AddField("entry.1198210276", progressCompletion);
         form.AddField("entry.1501425783", failedCount);
         form.AddField("entry.363537418", restartButtonPressed);
         form.AddField("entry.1057042240", shapeSelected);
@@ -86,7 +87,7 @@ public class SendStatistics : MonoBehaviour
         form.AddField("entry.1132375022", sceneName);
         form.AddField("entry.374704517", childAge);
         form.AddField("entry.2096971648", childGender);
-        form.AddField("YPqjbf", userId);
+        form.AddField("entry.1671266149", userId);
 
         byte[] rawData = form.data;
         WWW www = new WWW(BASE_URL, rawData);

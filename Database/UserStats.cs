@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class UserStats
     public string timerIdle;
     public string timerOnTouch;
     public string sceneName;
+    public int progressCompletion;
 
     public UserStats()
     {
@@ -24,6 +26,7 @@ public class UserStats
         shapeSelected = UserStatsManager.shapeSelected;
         timerIdle = UserStatsManager.timerIdle;
         timerOnTouch = UserStatsManager.timerOnTouch;
+        progressCompletion = UserStatsManager.progressCompletion;
     }
 
     public UserStats(IDictionary<string, object> dict)
@@ -36,6 +39,7 @@ public class UserStats
         this.restartButtonPressed = dict["restartButtonPressed"].ToString();
         this.shapeSelected = dict["shapeSelected"].ToString();
         this.timerIdle = dict["timerIdle"].ToString();
-        this.timerOnTouch = dict["timerOnTouch"].ToString();        
+        this.timerOnTouch = dict["timerOnTouch"].ToString();
+        this.progressCompletion = Convert.ToInt32(dict["progressCompletion"]);
     }
 }

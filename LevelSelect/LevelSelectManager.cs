@@ -26,29 +26,13 @@ public class LevelSelectManager : MonoBehaviour
 
     private void UnlockLevel()
     {
-        if(UserManager.levelUnlocked == "1")
-        {
-            levelSelectButton[0].interactable = true;
-            levelSelectButton[1].interactable = false;
-            levelSelectButton[2].interactable = false;
-
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter(FirebaseAnalytics.ParameterLevel, 1));
-        }
-        else if(UserManager.levelUnlocked == "2")
-        {
-            levelSelectButton[0].interactable = true;
-            levelSelectButton[1].interactable = true;
-            levelSelectButton[2].interactable = false;
-
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter(FirebaseAnalytics.ParameterLevel, 2));
-        }
-        else if(UserManager.levelUnlocked == "3")
+        if(UserManager.levelUnlocked != "0")
         {
             levelSelectButton[0].interactable = true;
             levelSelectButton[1].interactable = true;
             levelSelectButton[2].interactable = true;
 
-            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter(FirebaseAnalytics.ParameterLevel, 3));
-        }
+            FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventLevelUp, new Parameter(FirebaseAnalytics.ParameterLevel, 1));
+        }        
     }
 }
